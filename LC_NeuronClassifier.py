@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 """
 @author: Lowie Cloesen
@@ -281,19 +280,20 @@ class NeuralNetwork:
 
 """START OF MAIN CODE"""
 plt.close('all')
+plt.ion()
 
 """USER INPUT VARIABLES"""
 # Folder containing training and submission data. 
 ### MAKE SURE TO CHANGE THE ROOT_DIRECTORY TO THE FOLDER WHERE YOU PUT THE TRAINING AND SUBMISSION .MAT FILES###
-root_directory = r"/Users/RootDirName"
+root_directory = r"/Users/RootDirectory"
 training_file_name = "training.mat"
 submission_file_name = "submission.mat"
 
-# Do you want to run the algorithm optimiser (see STEP 6)? 
+### Do you want to run the algorithm optimiser (see STEP 6)? ###
 # This will take a few minutes to run. 
 # If the optimisation is not used, the KNN classifier used for the submission
 # data will use 4 neighbours by default as this should give the best results.
-run_optimisation = 1 # no = 0, yes = 1
+run_optimisation = 0 # no = 0, yes = 1
 """END OF USER INPUT VARIABLES"""
 
 # Location of the training data
@@ -476,7 +476,7 @@ https://towardsdatascience.com/optimization-techniques-simulated-annealing-d6a47
 if run_optimisation == 1:
     print("\nOptimising KNN classifier...")
     annealer = Annealer(1, spike_train, class_train, spike_test, class_test)
-    best_knn_pred, cost_values, n_values = annealer.anneal(alpha = 0.9, iterations = 5)
+    best_knn_pred, cost_values, n_values = annealer.anneal(alpha = 0.9, iterations = 10)
     
     # Find best n
     best_n_idx = cost_values.index(min(cost_values))
@@ -488,9 +488,9 @@ if run_optimisation == 1:
     axs[0].set_title("Optimisation")
     axs[1].plot(n_values)
     axs[1].set_ylabel("Number of neighbours")
- 
+    plt.show()
+    print("End of optimisation, using {0} neighbours for best predictions...".format(best_n))
 
-    print("End of optimisation...")
 else:
     best_n = 4
     print("\nSkipped optimisation...")
@@ -531,6 +531,10 @@ best_knn.fit(spike_data, spike_class)
 # Predict the neuron types
 final_pred = best_knn.predict(spike_s_data)
 unique, counts = np.unique(final_pred, return_counts=True)
+print("\nClassifier found the following types in the submission data:")
+for i in range(len(unique)):
+    print("Type {0}: {1} spikes".format(unique[i], counts[i]))
+
 
 # Save the results
 mat_out = {'Index': peaks_s, 'Class':final_pred}
@@ -538,6 +542,3 @@ submission_file_name = "LowieCloesen.mat"
 submission_file_path = os.path.join(root_directory, submission_file_name)
 io.savemat(submission_file_path, mat_out)
 print("\nResults for submission saved as {0} in {1}".format(submission_file_name, root_directory))
-
-if run_optimisation == 1:
-   plt.show()
