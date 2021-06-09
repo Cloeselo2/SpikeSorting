@@ -4,7 +4,7 @@
 This project was part of a university module on Computational Intelligence which provided an introduction to machine learning and its applications. The application here was the use of machine learning algorithms to process recordings of brain activity measured from electrodes inserted in a subject’s brain. These pick up the activity of a few neurons located near the tip of the electrode with the aim of tracking the response of neighbouring neurons as these can fire in response to different things. Accurate tracking of single-neuron activity is important to further our understanding of brain mechanisms and disorders such as Alzheimer’s.
 Because the electrodes record the combined activity of neighbouring neurons, the activity of an individual neuron needs to be isolated from the rest of the signal. This is done by looking for spikes in the recording which correspond to a neuron firing and differentiating them based on their morphology as multiple spikes produced by the same neuron should have the same shape. A visual explanation of this process is shown below.
 
-![Spike Sorting Workflow](images/Spike sorting workflow.png)
+![Spike Sorting Workflow](_images/Spike sorting workflow.png)
 
 ## Objectives
 
